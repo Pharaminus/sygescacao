@@ -1,34 +1,37 @@
-from django.shortcuts import render
-
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from rest_framework import viewsets
-
+from rest_framework import status, generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from cocoaApp.models import Parcelle
 from cocoaApp.serializer import ParcelleSerializer
 
-
-class ParcelleListview(ListView):
-    model = Parcelle
+class ParcelleCreateView(APIView):
+    def post(self, request):
+        serializer = ParcelleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    template_name = 'cocoaApp/Parcelle.html'
-    
-class ParcelleCreateview(CreateView):
-    model = Parcelle
-    fields = ['numero_titre_foncier','statut', 'coordonnees_polygonales', 'superficie', 'nombre_arbres', 'age_moyen_arbres', 'producteur']
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/parcelle'
-    
-class ParcelleDeleteview(DeleteView):
-    model = Parcelle
-    template_name = 'cocoaApp/delete.html'
-    success_url = '/parcelle'
-class ParcelleUpdateview(UpdateView):
-    model = Parcelle
-    fields = '__all__'
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/parcelle'
-    
-class ParcelleViewset(viewsets.ModelViewSet):
+class ParcelleListView(generics.ListAPIView):
     queryset = Parcelle.objects.all()
     serializer_class = ParcelleSerializer
+    
+    
+class ParcelleByProducteurView(generics.ListAPIView):
+    serializer_class = ParcelleSerializer
+
+    def get_queryset(self):
+        producteur_id = self.kwargs['producteur_id']
+        return Parcelle.objects.filter(producteur_id=producteur_id)
+    
+
+
+class ParcelleUpdateView(generics.UpdateAPIView):
+    queryset = Parcelle.objects.all()
+    serializer_class = ParcelleSerializer
+    lookup_field = 'id'  # Utiliser l'ID du Parcelle pour les opérations
+
+class ParcelleDeleteView(generics.DestroyAPIView):
+    queryset = Parcelle.objects.all()
+    serializer_class = ParcelleSerializer
+    lookup_field = 'id'  # Utiliser l'ID du Parcelle pour les opérations

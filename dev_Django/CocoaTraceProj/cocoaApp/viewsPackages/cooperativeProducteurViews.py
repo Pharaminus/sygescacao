@@ -1,35 +1,43 @@
-from django.shortcuts import render
-
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from rest_framework import viewsets
-
+from rest_framework import status, generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from cocoaApp.models import CooperativeProducteur
 from cocoaApp.serializer import CooperativeProducteurSerializer
 
-
-class CooperativeProducteurListview(ListView):
-    model = CooperativeProducteur
-    template_name = 'cocoaApp/cooperativeProducteur.html'
+class CooperativeProducteurCreateView(APIView):
+    def post(self, request):
+        serializer = CooperativeProducteurSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
-    
-class CooperativeProducteurCreateview(CreateView):
-    model = CooperativeProducteur
-    fields = ['date_arriver_producteur','cooperative', 'producteur']
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/cooperativeProducteur'
-    
-class CooperativeProducteurDeleteview(DeleteView):
-    model = CooperativeProducteur
-    template_name = 'cocoaApp/delete.html'
-    success_url = '/cooperativeProducteur'
-class CooperativeProducteurUpdateview(UpdateView):
-    model = CooperativeProducteur
-    fields = '__all__'
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/cooperativeProducteur'
-    
-class CooperativeProducteurViewset(viewsets.ModelViewSet):
+class CooperativeProducteurListView(generics.ListAPIView):
     queryset = CooperativeProducteur.objects.all()
     serializer_class = CooperativeProducteurSerializer
+    
+    
+class CooperativeProducteurByProducteurView(generics.ListAPIView):
+    serializer_class = CooperativeProducteurSerializer
+
+    def get_queryset(self):
+        producteur_id = self.kwargs['producteur_id']
+        return CooperativeProducteur.objects.filter(producteur_id=producteur_id)
+
+class CooperativeProducteurByCooperativeView(generics.ListAPIView):
+    serializer_class = CooperativeProducteurSerializer
+
+    def get_queryset(self):
+        cooperative_id = self.kwargs['cooperative_id']
+        return CooperativeProducteur.objects.filter(cooperative_id=cooperative_id)
+
+
+class CooperativeProducteurUpdateView(generics.UpdateAPIView):
+    queryset = CooperativeProducteur.objects.all()
+    serializer_class = CooperativeProducteurSerializer
+    lookup_field = 'id'  # Utiliser l'ID du CooperativeProducteur pour les opérations
+
+class CooperativeProducteurDeleteView(generics.DestroyAPIView):
+    queryset = CooperativeProducteur.objects.all()
+    serializer_class = CooperativeProducteurSerializer
+    lookup_field = 'id'  # Utiliser l'ID du CooperativeProducteur pour les opérations

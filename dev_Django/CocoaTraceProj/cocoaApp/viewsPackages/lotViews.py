@@ -1,34 +1,52 @@
-from django.shortcuts import render
-
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from rest_framework import viewsets
-
+from rest_framework import status, generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from cocoaApp.models import Lot
 from cocoaApp.serializer import LotSerializer
 
-
-class LotListview(ListView):
-    model = Lot
+class LotCreateView(APIView):
+    def post(self, request):
+        serializer = LotSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    template_name = 'cocoaApp/lot.html'
-    
-class LotCreateview(CreateView):
-    model = Lot
-    fields = ['numero_lot','quantite', 'type_commercial', 'taux_humidite', 'date_recolt', 'date_livraison', 'cooperative', 'producteur', 'sac', 'parcelle']
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/lot'
-    
-class LotDeleteview(DeleteView):
-    model = Lot
-    template_name = 'cocoaApp/delete.html'
-    success_url = '/lot'
-class LotUpdateview(UpdateView):
-    model = Lot
-    fields = '__all__'
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/lot'
-    
-class LotViewset(viewsets.ModelViewSet):
+class LotListView(generics.ListAPIView):
     queryset = Lot.objects.all()
     serializer_class = LotSerializer
+    
+    
+class LotByProducteurView(generics.ListAPIView):
+    serializer_class = LotSerializer
+
+    def get_queryset(self):
+        producteur_id = self.kwargs['producteur_id']
+        return Lot.objects.filter(producteur_id=producteur_id)
+
+class LotByCooperativeView(generics.ListAPIView):
+    serializer_class = LotSerializer
+
+    def get_queryset(self):
+        cooperative_id = self.kwargs['cooperative_id']
+        return Lot.objects.filter(cooperative_id=cooperative_id)
+
+class LotByParcelleView(generics.ListAPIView):
+    serializer_class = LotSerializer
+
+    def get_queryset(self):
+        parcelle_id = self.kwargs['parcelle_id']
+        return Lot.objects.filter(parcelle_id=parcelle_id)
+    
+
+
+class LotUpdateView(generics.UpdateAPIView):
+    queryset = Lot.objects.all()
+    serializer_class = LotSerializer
+    lookup_field = 'id'  # Utiliser l'ID du Lot pour les opérations
+
+class LotDeleteView(generics.DestroyAPIView):
+    queryset = Lot.objects.all()
+    serializer_class = LotSerializer
+    lookup_field = 'id'  # Utiliser l'ID du Lot pour les opérations
+    

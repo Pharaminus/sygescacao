@@ -3,28 +3,20 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 # ====| tutoriel pour l'API REST |=======
-class Blog(models.Model):
-    topic = models.CharField(max_length=200)
-    body = models.TextField()
-#Your Model Identity
-    class Meta:
-        verbose_name = ("Blog")
-        verbose_name_plural = ("Blogs")
-    def __str__(self):
-        return self.topic
-    
-    
-class User(AbstractUser, models.Model):
-    ROLE_CHOICES = [
-        ('admin', 'Admin'),
-        ('adminCoop', 'AdminCoop'),
-        ('acteur', 'Acteur'),
-    ]
-    
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='acteur')
 
-    def __str__(self):
-        return self.username
+    
+    
+# class User(AbstractUser, models.Model):
+#     ROLE_CHOICES = [
+#         ('admin', 'Admin'),
+#         ('adminCoop', 'AdminCoop'),
+#         ('acteur', 'Acteur'),
+#     ]
+    
+#     # role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='acteur')
+
+#     def __str__(self):
+#         return self.username
     
 class Acheteur(models.Model):
     nom = models.CharField(max_length=200)

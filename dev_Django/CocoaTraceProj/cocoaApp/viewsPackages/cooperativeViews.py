@@ -1,49 +1,37 @@
-from django.shortcuts import render
-
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from rest_framework import viewsets
-
-from cocoaApp.models import Cooperative, Producteur, CooperativeProducteur
+from rest_framework import status, generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from cocoaApp.models import Cooperative
 from cocoaApp.serializer import CooperativeSerializer
 
-
-class CooperativeListview(ListView):
+class CooperativeCreateView(APIView):
+    def post(self, request):
+        serializer = CooperativeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    model = Cooperative
-    
-    template_name = 'cocoaApp/cooperative.html'
-    
-class CooperativeCreateview(CreateView):
-    model = Cooperative
-    fields = ['numero_titre_foncier','statut', 'coordonnees_polygonales', 'superficie', 'nombre_arbres', 'age_moyen_arbres', 'producteur']
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/cooperative'
-    
-class CooperativeDeleteview(DeleteView):
-    model = Cooperative
-    template_name = 'cocoaApp/delete.html'
-    success_url = '/cooperative'
-class CooperativeUpdateview(UpdateView):
-    model = Cooperative
-    fields = '__all__'
-    template_name = 'cocoaApp/newpost.html'
-    success_url = '/cooperative'
-    
-class CooperativeViewset(viewsets.ModelViewSet):
+class CooperativeListView(generics.ListAPIView):
     queryset = Cooperative.objects.all()
     serializer_class = CooperativeSerializer
-
-def loginCooperative(request):
-    if request.method == 'POST':
-        identifiant = request.POST.get('identifiant')
-        mot_pass = request.POST.get('mot_pass')
-        print(f"=========| pass 1 {identifiant}=={mot_pass}")
-        if Cooperative.objects.filter(identifiant_unique=identifiant, mot_pass=mot_pass):
-            print("=========| pass 2")
-            
-            return render(request, 'cocoaApp/cooperative.html')
-        
-    return render(request, 'cocoaApp/cooperativelogin.html')
     
-        
+    
+# class CooperativeByCooperativeView(generics.ListAPIView):
+#     serializer_class = CooperativeSerializer
+
+#     def get_queryset(self):
+#         cooperative_id = self.kwargs['cooperative_id']
+#         return Cooperative.objects.filter(CooperativeCoop__cooperative_id=cooperative_id)
+    
+
+
+class CooperativeUpdateView(generics.UpdateAPIView):
+    queryset = Cooperative.objects.all()
+    serializer_class = CooperativeSerializer
+    lookup_field = 'id'  # Utiliser l'ID du Cooperative pour les opérations
+
+class CooperativeDeleteView(generics.DestroyAPIView):
+    queryset = Cooperative.objects.all()
+    serializer_class = CooperativeSerializer
+    lookup_field = 'id'  # Utiliser l'ID du Cooperative pour les opérations

@@ -134,7 +134,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'cocoaApp.User'
+# AUTH_USER_MODEL = 'cocoaApp.User'
 
 SESSION_COOKIE_AGE = 1209600  # Durée en secondes (ici, 2 semaines)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Efface la session à la fermeture du navigateur
