@@ -165,6 +165,11 @@ class CooperativeProducteur(models.Model):
         verbose_name = 'CooperativeProducteur'
         verbose_name_plural = 'CooperativeProducteurs'
 
-    
+
+
+class Utilisateur(models.Model):
+    nom = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    mot_de_passe = models.CharField(max_length=255)
 
 

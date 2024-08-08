@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Acheteur, Sac, Producteur, Parcelle, Cooperative, Lot, CooperativeProducteur
+from .models import Acheteur, Sac, Producteur, Parcelle, Cooperative, Lot, CooperativeProducteur, Utilisateur
 
         
 class AcheteurSerializer(serializers.ModelSerializer):
@@ -34,3 +34,8 @@ class CooperativeProducteurSerializer(serializers.ModelSerializer):
     class Meta:
         model = CooperativeProducteur
         fields = '__all__'
+        
+class UtilisateurSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Utilisateur
+        fields = ['nom', 'email', 'mot_de_passe']

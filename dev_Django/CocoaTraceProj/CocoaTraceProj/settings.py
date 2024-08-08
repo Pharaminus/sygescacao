@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'cocoaApp',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -50,8 +51,27 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    
+]
+CORS_ALLOW_ALL_ORIGINS = True 
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:8000',
+#     'http://localhost:3000',
+# ]
+
+CORS_ALLOWED_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
 ]
 
+CORS_ALLOWED_HEADERS = [
+    'Content-Type',
+    'Authorization',
+]
 ROOT_URLCONF = 'CocoaTraceProj.urls'
 
 TEMPLATES = [

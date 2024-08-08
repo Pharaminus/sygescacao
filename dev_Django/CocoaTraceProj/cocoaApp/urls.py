@@ -7,7 +7,7 @@ from cocoaApp.viewsPackages.cooperativeViews import CooperativeCreateView, Coope
 from cocoaApp.viewsPackages.lotViews import LotCreateView, LotListView, LotUpdateView, LotDeleteView, LotByCooperativeView, LotByParcelleView, LotByProducteurView
 from cocoaApp.viewsPackages.cooperativeProducteurViews import CooperativeProducteurCreateView, CooperativeProducteurListView, CooperativeProducteurUpdateView, CooperativeProducteurDeleteView, CooperativeProducteurByCooperativeView, CooperativeProducteurByProducteurView
 from rest_framework.routers import DefaultRouter
-from .views import register, login_view
+from .views import register, login_view, InscriptionView, TestUrl
 
 
 
@@ -17,6 +17,8 @@ from .views import register, login_view
 AcheteurRouteur = DefaultRouter()
 # AcheteurRouteur.register('acheteur_rest', AcheteurViewset, basename='acheteur_viewset' )
 urlpatterns = [
+    path('test/', TestUrl, name='testUrl'),
+    path('inscription/', InscriptionView.as_view()),
     path('register/', register, name='register'),
     path('login/', login_view, name='login'),
     path('cocoa/acheteur/new/', AcheteurCreateView.as_view(), name='acheteur-create'),
