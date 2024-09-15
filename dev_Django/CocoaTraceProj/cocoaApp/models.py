@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 # ====| tutoriel pour l'API REST |=======
@@ -12,6 +12,19 @@ class Blog(models.Model):
         verbose_name_plural = ("Blogs")
     def __str__(self):
         return self.topic
+    
+    
+class User(AbstractUser, models.Model):
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('adminCoop', 'AdminCoop'),
+        ('acteur', 'Acteur'),
+    ]
+    
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='acteur')
+
+    def __str__(self):
+        return self.username
     
 class Acheteur(models.Model):
     nom = models.CharField(max_length=200)
@@ -103,7 +116,7 @@ class Cooperative(models.Model):
     '''Model definition for Cooperative.'''
     
     nom = models.CharField(max_length=200)
-    image = models.CharField(max_length=200)
+    image = models.ImageField(null=True)
     type_cooperative = models.CharField(max_length=200)
     siege_social = models.CharField(max_length=200)
     nom_responssable = models.CharField(max_length=200)
@@ -113,6 +126,8 @@ class Cooperative(models.Model):
     arrondissement = models.CharField(max_length=200)
     village = models.CharField(max_length=200)
     coordonnees_gps = models.CharField(max_length=200)
+    # identifiant_unique = models.CharField(max_length=500)
+    # mot_pass = models.CharField(max_length=200)
 
     class Meta:
         '''Meta definition for Cooperative.'''
@@ -123,7 +138,7 @@ class Cooperative(models.Model):
     def __str__(self):
         return self.nom
     
-class lot(models.Model):
+class Lot(models.Model):
     '''Model definition for lot.'''
     
     numero_lot = models.CharField(max_length=200)
