@@ -67,7 +67,7 @@ parcelle_urls = [
     path('cocoa/parcelle/<int:id>/', ParcelleUpdateView.as_view(), name='parcelle-update'),
     path('cocoa/parcelle/<int:id>/delete/', ParcelleDeleteView.as_view(), name='parcelle-delete'),
 ]
-# urlpatterns += parcelle_urls + parcelleRouteur.urls
+urlpatterns += parcelle_urls + parcelleRouteur.urls
 
 
 
@@ -81,7 +81,7 @@ cooperative_urls = [
     path('cocoa/cooperative/<int:id>/', CooperativeUpdateView.as_view(), name='cooperative-update'),
     path('cocoa/cooperative/<int:id>/delete/', CooperativeDeleteView.as_view(), name='cooperative-delete'),
 ]
-# urlpatterns += cooperative_urls + cooperativeRouteur.urls
+urlpatterns += cooperative_urls + cooperativeRouteur.urls
 
 # ===========| lot urls |========================
 lotRouteur = DefaultRouter()
@@ -95,7 +95,7 @@ lot_urls = [
     path('cocoa/lot/<int:id>/', LotUpdateView.as_view(), name='lot-update'),
     path('cocoa/lot/<int:id>/delete/', LotDeleteView.as_view(), name='lot-delete'),
 ]
-# urlpatterns += lot_urls + lotRouteur.urls
+urlpatterns += lot_urls + lotRouteur.urls
 
 # ===========| cooperativeProducteur urls |========================
 cooperativeProducteurRouteur = DefaultRouter()
@@ -108,4 +108,6 @@ cooperativeProducteur_urls = [
     path('cocoa/cooperativeProducteur/<int:id>/', CooperativeProducteurUpdateView.as_view(), name='cooperativeProducteur-update'),
     path('cocoa/cooperativeProducteur/<int:id>/delete/', CooperativeProducteurDeleteView.as_view(), name='cooperativeProducteur-delete'),
 ]
-# urlpatterns += cooperativeProducteur_urls + cooperativeProducteurRouteur.urls
+urlpatterns += cooperativeProducteur_urls + cooperativeProducteurRouteur.urls
+
+

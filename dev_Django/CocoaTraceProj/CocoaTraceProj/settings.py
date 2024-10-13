@@ -38,28 +38,30 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'cocoaApp',
-    'rest_framework',
     'corsheaders',
+    'rest_framework',
+    'cocoaApp',
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     
 ]
-CORS_ALLOW_ALL_ORIGINS = True 
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:8000',
-#     'http://localhost:3000',
-# ]
 
+# REST_FRAMEWORK = {'DEFAULT_PERMISSION_CLASSES':['rest_framewwork.permissions.AllowAny']}
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_HEADERS = [
+    'Content-Type',
+    'access-control-allow-origin',
+]
 CORS_ALLOWED_METHODS = [
     'GET',
     'POST',
@@ -67,11 +69,22 @@ CORS_ALLOWED_METHODS = [
     'DELETE',
     'OPTIONS',
 ]
+# ALLOWED_HOSTS = ['192.168.43.8']
 
-CORS_ALLOWED_HEADERS = [
-    'Content-Type',
-    'Authorization',
-]
+# CORS_ORIGIN_WHITELIST = [
+#     # 'http://192.168.1.69:19000',
+#     'http://localhost:8081',
+    
+# ]
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:8000',
+#     'http://localhost:3000',
+# ]
+
+
+
+
 ROOT_URLCONF = 'CocoaTraceProj.urls'
 
 TEMPLATES = [
